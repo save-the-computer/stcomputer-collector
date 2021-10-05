@@ -1,6 +1,6 @@
 import sys
 import jsonpickle
-from collectors import collectors
+from stcomputer_collector import collectors
 
 
 def help():

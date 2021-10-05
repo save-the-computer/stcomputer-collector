@@ -1,7 +1,7 @@
 from typing import Dict
 import requests
-from stcomputer_collector.provider.danawa.collector import DanawaCPUCollector, DanawaCollector, DanawaMainboardCollector, DanawaRAMCollector, DanawaVGACollector
-from stcomputer_collector.provider.danawa.session import DanawaSession
+from .provider.danawa.collector import DanawaCPUCollector, DanawaCollector, DanawaMainboardCollector, DanawaRAMCollector, DanawaVGACollector
+from .provider.danawa.session import DanawaSession
 
 
 __driver = requests.Session()
