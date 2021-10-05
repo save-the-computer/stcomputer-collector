@@ -1,8 +1,8 @@
 from typing import Optional
 import re
-from collector.classification import Classification
-from collector.product import Product, ProductSpec
-from collector.tag import resolve_tag
+from stcomputer_collector.classification import Classification
+from stcomputer_collector.product import Product, ProductSpec
+from stcomputer_collector.tag import resolve_tag
 from ..base.collector import Collector
 from .session import DanawaSession
 

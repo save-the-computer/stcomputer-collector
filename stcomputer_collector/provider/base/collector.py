@@ -1,6 +1,6 @@
 from abc import ABCMeta, abstractmethod
 from typing import Iterable, Optional
-from collector.product import ProductSpec
+from stcomputer_collector.product import ProductSpec
 from .session import Session
 
 

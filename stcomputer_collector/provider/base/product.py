@@ -1,6 +1,6 @@
 from typing import Optional
-from collector.product import Product, ProductSpec
-from collector.tag import Tags
+from stcomputer_collector.product import Product, ProductSpec
+from stcomputer_collector.tag import Tags
 
 
 class RawProduct:

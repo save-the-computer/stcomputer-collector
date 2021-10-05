@@ -2,7 +2,7 @@ from abc import ABCMeta, abstractmethod
 from typing import Dict, Optional
 import requests
 
-from collector.tag import TagsDictionary
+from stcomputer_collector.tag import TagsDictionary
 from .product import RawProductSpec
 
 

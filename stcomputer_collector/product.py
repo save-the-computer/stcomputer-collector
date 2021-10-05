@@ -1,6 +1,6 @@
 from typing import Optional
-from collector.classification import Classification
-from collector.tag import Tags
+from .classification import Classification
+from .tag import Tags
 
 
 class Product:

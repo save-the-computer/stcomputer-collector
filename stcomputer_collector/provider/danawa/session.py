@@ -2,7 +2,7 @@ from typing import Dict
 from bs4 import BeautifulSoup
 from bs4.element import Tag
 import re
-from collector.tag import TagsDictionary
+from stcomputer_collector.tag import TagsDictionary
 from ..base.product import RawProduct, RawProductSpec
 from ..base.session import Session
 
