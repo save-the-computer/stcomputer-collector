@@ -16,3 +16,10 @@ collectors: Dict[str, DanawaCollector] = {
     '메인보드': DanawaMainboardCollector(__session),
     'RAM': DanawaRAMCollector(__session),
 }
+
+
+def get_collector(name) -> Collector:
+    if name not in collectors:
+        raise KeyError(f'Collector "{name}" is not found. choose one of: {collectors.keys()}')
+    
+    return collectors[name]
