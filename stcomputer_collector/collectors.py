@@ -1,5 +1,6 @@
 from typing import Dict
 import requests
+from .provider.base.collector import Collector
 from .provider.danawa.collector import DanawaCPUCollector, DanawaCollector, DanawaMainboardCollector, DanawaRAMCollector, DanawaVGACollector
 from .provider.danawa.session import DanawaSession
 
