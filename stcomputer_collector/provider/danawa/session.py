@@ -2,6 +2,7 @@ from typing import Dict
 from bs4 import BeautifulSoup
 from bs4.element import Tag
 import re
+from datetime import date
 from stcomputer_collector.tag import TagsDictionary
 from ..base.product import RawProduct, RawProductSpec
 from ..base.session import Session
@@ -52,8 +53,8 @@ class DanawaSession(Session):
             return None
 
         # example: 2020.11
-        registration_year, registration_month = registration_date.text.split('.')
-        product_spec.registration_date = f'{registration_year}-{registration_month}'
+        registration_year, registration_month = map(int, registration_date.text.split('.'))
+        product_spec.registration_date = date(registration_year, registration_month, 1)
 
         # example: PC주요부품 > CPU > AMD (카테고리가 없으면 SKIP)
         if (category := element.select_one('.prod_category_location > dd')) is None:
