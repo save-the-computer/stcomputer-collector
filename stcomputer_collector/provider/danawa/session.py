@@ -38,19 +38,26 @@ class DanawaSession(Session):
     def __parse_product_spec(self, element: Tag) -> RawProductSpec:
         product_spec = RawProductSpec()
 
-        product_spec.id = re.search(r'\?pcode=(.+?)\&', element.select_one('.prod_name > a').attrs['href']).groups()[0]
-        product_spec.name = element.select_one('.prod_name > a').text
+        if (title_element := element.select_one('.prod_name > a')) is None:
+            raise DanawaParseError(f'Note: Skip unknown product spec.')
 
-        thumbnail = element.select_one('.thumb_image img')
-        if 'src' in thumbnail.attrs:
-            product_spec.thumbnail = thumbnail.attrs['src']
+        product_spec.name = title_element.text
+
+        if (id_match := re.search(r'\?pcode=(.+?)\&', title_element.attrs['href'])) is None:
+            raise DanawaParseError(f'Note: Skip product spec "{product_spec.name}", because it does not have id attribute.')
+
+        product_spec.id = id_match.groups()[0]
+
+        thumbnail_element = element.select_one('.thumb_image img')
+        if 'src' in thumbnail_element.attrs:
+            product_spec.thumbnail = thumbnail_element.attrs['src']
         else:
-            product_spec.thumbnail = thumbnail.attrs['data-original']
+            product_spec.thumbnail = thumbnail_element.attrs['data-original']
 
         product_spec.tags = [*map(lambda spec: spec.strip(), element.select_one('.prod_spec_set .spec_list').text.strip().split(' / '))]
 
         if (registration_date := element.select_one('.prod_sub_meta > .mt_date > dd')) is None:
-            return None
+            raise DanawaParseError(f'Note: Skip product spec "{product_spec.name}", because it does not have registration date.')
 
         # example: 2020.11
         registration_year, registration_month = map(int, registration_date.text.split('.'))
@@ -88,7 +95,6 @@ class DanawaSession(Session):
             except Exception as error:
                 print('Unexpected error occurs while parse product element, See below:')
                 print(error)
-
 
             products.append(product)
 
