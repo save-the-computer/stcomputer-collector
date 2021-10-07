@@ -1,5 +1,5 @@
 from bs4 import BeautifulSoup
-from bs4.element import Tag
+from bs4.element import NavigableString, Tag
 import re
 from datetime import date
 from stcomputer_collector.tag import TagsDictionary
@@ -19,7 +19,8 @@ class DanawaSession(Session):
         product.id = re.search(r'productInfoDetail_(\d+)', element.attrs['id']).groups()[0]
 
         if (variant := element.select_one('.memory_sect')) is not None:
-            product.variant = ' '.join(filter(lambda token: len(token) > 0 and not re.match(r'\d+위', token), map(lambda token: token.strip(), variant.find_all(text=True))))
+            # get all text node and glue tokens
+            product.variant = ' '.join(filter(lambda token: len(token) > 0, map(lambda child: str(child).strip(), filter(lambda child: isinstance(child, NavigableString), variant.children))))
         else:
             product.variant = None
 
