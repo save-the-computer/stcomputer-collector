@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import List, Optional
 from stcomputer_collector.product import Product, ProductSpec
 from stcomputer_collector.tag import Tags
 
@@ -31,9 +31,9 @@ class RawProductSpec:
     """제품 태그(스펙) 목록"""
     registration_date: str
     """제품 등록일 (YYYY-MM-DD (ex. 2020-11-01))"""
-    category: list[str]
+    category: List[str]
     """제품 카테고리 계층(예: PC주요부품 > CPU > AMD)"""
-    products: list[RawProduct]
+    products: List[RawProduct]
     """제품 정보 하위의 제품 목록 (정품, 중고 등)"""
 
     def assign_to(self, product_spec: ProductSpec):

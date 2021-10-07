@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import List, Optional
 from datetime import date
 from .classification import Classification
 from .tag import Tags
@@ -30,7 +30,7 @@ class ProductSpec:
     """제품 태그(스펙) 목록"""
     registration_date: date
     """제품 등록일 (YYYY-MM-DD (ex. 2020-11-01))"""
-    products: list[Product]
+    products: List[Product]
     """제품 정보 하위의 제품 목록 (정품, 중고 등)"""
     classification: Classification
     """제품 분류 정보"""

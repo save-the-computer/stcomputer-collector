@@ -1,5 +1,5 @@
 from abc import ABCMeta, abstractmethod
-from typing import Iterable, Optional
+from typing import Iterable, List, Optional
 from stcomputer_collector.product import ProductSpec
 from .session import Session
 
@@ -11,7 +11,7 @@ class Collector(metaclass=ABCMeta):
         self.session = session
 
     @abstractmethod
-    def do_collect(self, session: Session, page: int) -> Optional[list[ProductSpec]]:
+    def do_collect(self, session: Session, page: int) -> Optional[List[ProductSpec]]:
         pass
 
     def collect(self, page_limit: Optional[int]) -> 'CollectorIterator':
@@ -54,5 +54,5 @@ class QueryBasedCollector(Collector):
         super().__init__(session)
         self.query = query
 
-    def do_collect(self, session: Session, page: int) -> Optional[list[ProductSpec]]:
+    def do_collect(self, session: Session, page: int) -> Optional[List[ProductSpec]]:
         return session.load_from_query(self.query, page)

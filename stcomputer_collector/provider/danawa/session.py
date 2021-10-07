@@ -1,3 +1,4 @@
+from typing import List
 from bs4 import BeautifulSoup
 from bs4.element import NavigableString, Tag
 import re
@@ -77,7 +78,7 @@ class DanawaSession(Session):
         self.latest_response = self.driver.get(f'http://search.danawa.com/dsearch.php?query={query}&page={page}&limit=120')
 
 
-    def get_product_specs(self) -> list[RawProductSpec]:
+    def get_product_specs(self) -> List[RawProductSpec]:
         self.assert_page_loaded()
 
         soup = BeautifulSoup(self.latest_response.content, 'html.parser')

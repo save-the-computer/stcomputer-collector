@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import List, Optional
 import re
 from stcomputer_collector.classification import Classification
 from stcomputer_collector.product import Product, ProductSpec
@@ -15,7 +15,7 @@ class DanawaCollector(Collector):
 
 
 class DanawaCPUCollector(DanawaCollector):
-    def do_collect(self, session: DanawaSession, page: int) -> Optional[list[ProductSpec]]:
+    def do_collect(self, session: DanawaSession, page: int) -> Optional[List[ProductSpec]]:
         product_specs = []
         session.load_from_query('CPU', page)
 
@@ -47,7 +47,7 @@ class DanawaCPUCollector(DanawaCollector):
 
 
 class DanawaVGACollector(DanawaCollector):
-    def do_collect(self, session: DanawaSession, page: int) -> Optional[list[ProductSpec]]:
+    def do_collect(self, session: DanawaSession, page: int) -> Optional[List[ProductSpec]]:
         product_specs = []
 
         session.load_from_query('그래픽카드', page)
@@ -83,7 +83,7 @@ class DanawaVGACollector(DanawaCollector):
 
 
 class DanawaMainboardCollector(DanawaCollector):
-    def do_collect(self, session: DanawaSession, page: int) -> Optional[list[ProductSpec]]:
+    def do_collect(self, session: DanawaSession, page: int) -> Optional[List[ProductSpec]]:
         product_specs = []
 
         session.load_from_query('메인보드', page)
@@ -117,7 +117,7 @@ class DanawaMainboardCollector(DanawaCollector):
 
 
 class DanawaRAMCollector(DanawaCollector):
-    def do_collect(self, session: DanawaSession, page: int) -> Optional[list[ProductSpec]]:
+    def do_collect(self, session: DanawaSession, page: int) -> Optional[List[ProductSpec]]:
         product_specs = []
 
         session.load_from_query('RAM', page)

@@ -1,8 +1,8 @@
-from typing import Dict, Optional
+from typing import Dict, List, Optional
 
 
 Tag = str
-Tags = list[Tag]
+Tags = List[Tag]
 TagsDictionary = Dict[str, Tags]
 
 

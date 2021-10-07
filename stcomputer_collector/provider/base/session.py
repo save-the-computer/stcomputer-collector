@@ -1,5 +1,5 @@
 from abc import ABCMeta, abstractmethod
-from typing import Dict, Optional
+from typing import Dict, List, Optional
 import requests
 
 from stcomputer_collector.tag import TagsDictionary
@@ -26,7 +26,7 @@ class Session(metaclass=ABCMeta):
         pass
 
     @abstractmethod
-    def get_product_specs(self) -> list[RawProductSpec]:
+    def get_product_specs(self) -> List[RawProductSpec]:
         pass
 
     @abstractmethod
