@@ -34,12 +34,15 @@ class CollectorIterator:
     def __next__(self):
         self.page += 1
         if self.page > self.page_limit:
+            print(f'[{type(self.collector).__name__}] Collection done. (Pagenation reached to page limit {self.page_limit})')
             raise StopIteration
 
         product_specs = self.collector.do_collect(self.collector.session, self.page)
         if product_specs is None:
+            print(f'[{type(self.collector).__name__}] Collection done. (None returned by method Collector.do_collect)')
             raise StopIteration
-        
+
+        print(f'[{type(self.collector).__name__}] Collect page {self.page} done! Count of product specs is {len(product_specs)}.')
         return product_specs
 
 
