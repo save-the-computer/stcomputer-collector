@@ -14,7 +14,7 @@ class Collector(metaclass=ABCMeta):
     def do_collect(self, session: Session, page: int) -> Optional[list[ProductSpec]]:
         pass
 
-    def collect(self, page_limit: Optional[int]) -> Iterable:
+    def collect(self, page_limit: Optional[int]) -> 'CollectorIterator':
         return CollectorIterator(self, page_limit)
 
 
