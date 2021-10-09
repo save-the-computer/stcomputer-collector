@@ -50,7 +50,7 @@ class DanawaVGACollector(DanawaCollector):
     def do_collect(self, session: DanawaSession, page: int) -> Optional[List[ProductSpec]]:
         product_specs = []
 
-        session.load_from_query('그래픽카드', page)
+        session.load_from_query('VGA', page)
         tags_dictionary = session.get_search_tags_dictionary()
 
         for raw_product_spec in session.get_product_specs():
