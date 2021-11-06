@@ -44,7 +44,7 @@ class DanawaSession(Session):
 
         product_spec.name = title_element.text
 
-        if (id_match := re.search(r'\?pcode=(.+?)\&', title_element.attrs['href'])) is None:
+        if (id_match := re.search(r'\?pcode=(\d+?)\&', title_element.attrs['href'])) is None:
             raise DanawaParseError(f'Note: Skip product spec "{product_spec.name}", because it does not have id attribute.')
 
         product_spec.id = id_match.groups()[0]
