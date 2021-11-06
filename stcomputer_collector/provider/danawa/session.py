@@ -91,13 +91,12 @@ class DanawaSession(Session):
             
             try:
                 product = self.__parse_product_spec(product_element)
+                products.append(product)
             except DanawaParseError as error:
                 print(error)
             except Exception as error:
                 print('Unexpected error occurs while parse product element, See below:')
                 print(error)
-
-            products.append(product)
 
         return products
 
