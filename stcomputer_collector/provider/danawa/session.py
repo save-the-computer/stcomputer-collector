@@ -25,7 +25,7 @@ class DanawaSession(Session):
         else:
             product.variant = None
 
-        price_text = element.select_one('.price_sect > a > strong').text.strip().replace(',', '')
+        price_text = element.select_one('.price_sect > a > strong').text.strip().replace(',', '').rstrip('원')
         if price_text.isnumeric():
             product.price = int(price_text)
             product.stock_state = '재고있음'
@@ -69,7 +69,26 @@ class DanawaSession(Session):
             raise DanawaParseError(f'Note: Skip product spec "{product_spec.name}", because it does not have category location.')
 
         product_spec.category = [*map(lambda category: category.strip(), category.text.strip().split('>'))]
-        product_spec.products = [*map(self.__parse_product, element.select('.prod_pricelist li'))]
+        product_spec.products = [*map(self.__parse_product, element.select('.prod_pricelist li[id^="productInfoDetail"]'))]
+
+        # 제품 종류(중고, 정품, 병행수입 등) 대신 쇼핑몰 상위 5개가 표시될 경우 이에 대한 파싱
+        if len(product_spec.products) == 0 and element.select_one('.prod_pricelist.prod_top5') is not None:
+            product = RawProduct()
+            product.id = product_spec.id
+            product.variant = None
+
+            price_text = element.select_one('.prod_pricelist.prod_top5 .top5_item:first-child .top5_price').text.strip().replace(',', '').rstrip('원')
+            if price_text.isnumeric():
+                product.price = int(price_text)
+                product.stock_state = '재고있음'
+            else:
+                product.price = None
+                product.stock_state = price_text
+
+            product_spec.products = [product]
+
+        if len(product_spec.products) == 0:
+            raise DanawaParseError(f'Note: Skip product spec "{product_spec.name}", doesn\'t have any product!')
 
         return product_spec
 
