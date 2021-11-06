@@ -22,11 +22,13 @@ class CollectorIterator:
     collector: Collector
     page: int
     page_limit: Optional[int]
+    _count: int
 
     def __init__(self, collector, page_limit: Optional[int]):
         self.collector = collector
         self.page = 0
         self.page_limit = page_limit
+        self._count = 0
 
     def __iter__(self):
         return self
@@ -35,6 +37,7 @@ class CollectorIterator:
         self.page += 1
         if self.page > self.page_limit:
             print(f'[{type(self.collector).__name__}] Collection done. (Pagenation reached to page limit {self.page_limit})')
+            print(f'[{type(self.collector).__name__}] Total count: {self._count}')
             raise StopIteration
 
         product_specs = self.collector.do_collect(self.collector.session, self.page)
@@ -43,6 +46,7 @@ class CollectorIterator:
             raise StopIteration
 
         print(f'[{type(self.collector).__name__}] Collect page {self.page} done! Count of product specs is {len(product_specs)}.')
+        self._count += len(product_specs)
         return product_specs
 
 
