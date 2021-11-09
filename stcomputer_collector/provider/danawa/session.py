@@ -39,16 +39,19 @@ class DanawaSession(Session):
     def __parse_product_spec(self, element: Tag) -> RawProductSpec:
         product_spec = RawProductSpec()
 
+        # Parse: name
         if (title_element := element.select_one('.prod_name > a')) is None:
             raise DanawaParseError(f'Note: Skip unknown product spec.')
 
         product_spec.name = title_element.text
 
+        # Parse: id
         if (id_match := re.search(r'\?pcode=(\d+?)\&', title_element.attrs['href'])) is None:
             raise DanawaParseError(f'Note: Skip product spec "{product_spec.name}", because it does not have id attribute.')
 
         product_spec.id = id_match.groups()[0]
 
+        # Parse: thumbnail
         thumbnail_element = element.select_one('.thumb_image img')
         if 'src' in thumbnail_element.attrs:
             product_spec.thumbnail = thumbnail_element.attrs['src']
@@ -59,8 +62,10 @@ class DanawaSession(Session):
         if product_spec.thumbnail.startswith('//'):
             product_spec.thumbnail = 'http://' + product_spec.thumbnail.lstrip('//')
 
+        # Parse: tags
         product_spec.tags = [*map(lambda spec: spec.strip(), element.select_one('.prod_spec_set .spec_list').text.strip().split(' / '))]
 
+        # Parse: registration_date
         if (registration_date := element.select_one('.prod_sub_meta > .mt_date > dd')) is None:
             raise DanawaParseError(f'Note: Skip product spec "{product_spec.name}", because it does not have registration date.')
 
@@ -68,11 +73,14 @@ class DanawaSession(Session):
         registration_year, registration_month = map(int, registration_date.text.split('.'))
         product_spec.registration_date = date(registration_year, registration_month, 1)
 
+        # Parse: category
         # example: PC주요부품 > CPU > AMD (카테고리가 없으면 SKIP)
         if (category := element.select_one('.prod_category_location > dd')) is None:
             raise DanawaParseError(f'Note: Skip product spec "{product_spec.name}", because it does not have category location.')
 
         product_spec.category = [*map(lambda category: category.strip(), category.text.strip().split('>'))]
+
+        # Parse: products
         product_spec.products = [*map(self.__parse_product, element.select('.prod_pricelist li[id^="productInfoDetail"]'))]
 
         # 제품 종류(중고, 정품, 병행수입 등) 대신 쇼핑몰 상위 5개가 표시될 경우 이에 대한 파싱
