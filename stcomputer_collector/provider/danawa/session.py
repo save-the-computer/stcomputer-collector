@@ -19,12 +19,18 @@ class DanawaSession(Session):
         product = RawProduct()
         product.id = re.search(r'productInfoDetail_(\d+)', element.attrs['id']).groups()[0]
 
+        # Parse: variant
         if (variant := element.select_one('.memory_sect')) is not None:
             # get all text node and glue tokens
             product.variant = ' '.join(filter(lambda token: len(token) > 0, map(lambda child: str(child).strip(), filter(lambda child: isinstance(child, NavigableString), variant.children))))
         else:
             product.variant = None
 
+        # Set empty string to None
+        if not product.variant:
+            product.variant = None
+
+        # Parse: price, stock_state
         price_text = element.select_one('.price_sect > a > strong').text.strip().replace(',', '').rstrip('원')
         if price_text.isnumeric():
             product.price = int(price_text)
