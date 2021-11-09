@@ -54,6 +54,10 @@ class DanawaSession(Session):
             product_spec.thumbnail = thumbnail_element.attrs['src']
         else:
             product_spec.thumbnail = thumbnail_element.attrs['data-original']
+        
+        # if thumbnail url starts with //? -> trim
+        if product_spec.thumbnail.startswith('//'):
+            product_spec.thumbnail = 'http://' + product_spec.thumbnail.lstrip('//')
 
         product_spec.tags = [*map(lambda spec: spec.strip(), element.select_one('.prod_spec_set .spec_list').text.strip().split(' / '))]
 
