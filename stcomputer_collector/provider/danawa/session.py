@@ -76,7 +76,7 @@ class DanawaSession(Session):
             raise DanawaParseError(f'Note: Skip product spec "{product_spec.name}", because it does not have registration date.')
 
         # example: 2020.11
-        registration_year, registration_month = map(int, registration_date.text.split('.'))
+        registration_year, registration_month = map(int, filter(len, registration_date.text.split('.')))
         product_spec.registration_date = date(registration_year, registration_month, 1)
 
         # Parse: category
